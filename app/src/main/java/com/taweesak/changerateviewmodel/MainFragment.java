@@ -16,10 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MainFragment extends Fragment {
     private SharedViewModel viewModel;
     private EditText editText;
@@ -27,6 +23,7 @@ public class MainFragment extends Fragment {
     private TextView textView;
     private String textValue;
 
+    private Double valueRate;
 
     public MainFragment() {
         // Required empty public constructor
@@ -44,25 +41,26 @@ public class MainFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //textValue = editText.getText().toString();
-                //textView.setText(textValue);
-                viewModel.setText(editText.getText());
+                valueRate = Double.valueOf(editText.getText().toString());
 
+                viewModel.setText(valueRate);
             }
         });
-
         return v;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        viewModel.getText().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
+        viewModel.getText().observe(getViewLifecycleOwner(), new Observer<Double>() {
             @Override
-            public void onChanged(CharSequence charSequence) {
-                textView.setText(charSequence);
+            public void onChanged(Double aDouble) {
+                textView.setText(""+aDouble);
             }
+
+
         });
     }
 }
