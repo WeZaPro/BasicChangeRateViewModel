@@ -38,23 +38,8 @@ public class MainFragment extends Fragment {
         button = v.findViewById(R.id.btn);
         textView = v.findViewById(R.id.txtView);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                valueRate = Double.valueOf(editText.getText().toString());
-
-                viewModel.setText(valueRate);
-            }
-        });
-        return v;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
-        viewModel.getText().observe(getViewLifecycleOwner(), new Observer<Double>() {
+        viewModel.getText().observe(this, new Observer<Double>() {
             @Override
             public void onChanged(Double aDouble) {
                 textView.setText(""+aDouble);
@@ -62,5 +47,30 @@ public class MainFragment extends Fragment {
 
 
         });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try{
+                    valueRate = Double.valueOf(editText.getText().toString());
+                    viewModel.setText(valueRate);
+
+                }catch (NumberFormatException e){
+                    textView.setText("ERROR");
+                }
+
+            }
+        });
+
+
+        return v;
     }
+
+    /*@Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }*/
 }
